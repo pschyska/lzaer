@@ -1,6 +1,9 @@
-mongoose = require 'mongoose'.Mongoose
+global.sys = require 'sys'
+global.util = require 'util'
+global.http = require 'http'
+global.mongoose = require('mongoose').Mongoose
 
 module.exports.setup = ->
   global.db = mongoose.connect("mongodb://localhost/lzaer")
-  mongoose.model 'User', require("./model/user").definition()
+  require("./model/user")
   global.User = db.model 'User'
