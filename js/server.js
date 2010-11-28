@@ -1,7 +1,8 @@
 (function() {
-  var http, server, sys;
-  sys = require('sys');
-  http = require('http');
+  var server;
+  global.sys = require('sys');
+  global.http = require('http');
+  require('./setup').setup();
   server = http.createServer(function(req, res) {
     res.writeHead(200, {
       'Content-type': 'text/plain'

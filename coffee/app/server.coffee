@@ -1,10 +1,13 @@
-sys = require 'sys'
-http = require 'http'
+global.sys = require 'sys'
+global.http = require 'http'
+
+require('./setup').setup()
 
 server = http.createServer (req, res) ->
-	res.writeHead 200, {'Content-type': 'text/plain' }
-	res.write 'Hello, World!'
-	res.end()
+  res.writeHead 200, {'Content-type': 'text/plain' }
+  res.write 'Hello, World!'
+  
+  res.end()
 
 server.listen 3000
 
