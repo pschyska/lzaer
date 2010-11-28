@@ -1,4 +1,4 @@
-require('./setup').setup()
+app = require('./setup').setup()
 
 createTestUser = ->
   u = new User()
@@ -9,23 +9,13 @@ createTestUser = ->
     sys.puts 'Successfully saved test user'
 
 listAllUsers = (response)->
-  query=User.find()
-  query.all (users) ->
+  query=User.find().all (users) ->
     res=for user in users
       user.fullName
     sys.puts "write users to response"
     response.write res.join '\n'
+    response.end()
 
-
-server = http.createServer (req, res) ->
-  res.writeHead 200, {'Content-type': 'text/plain' }
-  res.write 'Hello, World!'
-  createTestUser()
-  listAllUsers(res)
-  sys.puts "ending response"
-  res.end()
-
-server.listen 3000
-
-sys.puts 'Listening port: over 9000 ... just kidding it\'s 3000'
-sys.puts 'http://localhost:3000'
+if (!module.parent)
+  app.listen 3000
+  console.log "Express server listening on port", app.address().port

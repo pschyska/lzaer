@@ -1,6 +1,6 @@
 (function() {
-  var createTestUser, listAllUsers, server;
-  require('./setup').setup();
+  var app, createTestUser, listAllUsers;
+  app = require('./setup').setup();
   createTestUser = function() {
     var u;
     u = new User();
@@ -13,8 +13,7 @@
   };
   listAllUsers = function(response) {
     var query;
-    query = User.find();
-    return query.all(function(users) {
+    return query = User.find().all(function(users) {
       var res, user, _i, _len, _results;
       res = function() {
         _results = [];
@@ -25,20 +24,12 @@
         return _results;
       }();
       sys.puts("write users to response");
-      return response.write(res.join('\n'));
+      response.write(res.join('\n'));
+      return response.end();
     });
   };
-  server = http.createServer(function(req, res) {
-    res.writeHead(200, {
-      'Content-type': 'text/plain'
-    });
-    res.write('Hello, World!');
-    createTestUser();
-    listAllUsers(res);
-    sys.puts("ending response");
-    return res.end();
-  });
-  server.listen(3000);
-  sys.puts('Listening port: over 9000 ... just kidding it\'s 3000');
-  sys.puts('http://localhost:3000');
+  if (!module.parent) {
+    app.listen(3000);
+    console.log("Express server listening on port", app.address().port);
+  }
 }).call(this);
