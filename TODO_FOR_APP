@@ -1,2 +1,2 @@
-- use jade to render templates
+- use coffeecup to render templates, why go only half way with coffeescript :-)
 - evaluate server push with socket.io
