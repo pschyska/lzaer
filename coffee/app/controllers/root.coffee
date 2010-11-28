@@ -16,7 +16,9 @@ listAllUsers = (response)->
 
 module.exports = 
   index: (request, response) ->
-    response.send "Hello, world!"
+    response.render 'index'
+      locals:
+        title: 'Lzaer'
       # var user=new User();
       # user.first_name = "John";
       # user.last_name = "Doe";

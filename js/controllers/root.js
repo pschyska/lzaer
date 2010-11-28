@@ -29,7 +29,11 @@
   };
   module.exports = {
     index: function(request, response) {
-      return response.send("Hello, world!");
+      return response.render('index', {
+        locals: {
+          title: 'Lzaer'
+        }
+      });
     }
   };
 }).call(this);
