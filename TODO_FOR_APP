@@ -1,2 +1,2 @@
-- kang express controllers from extjs-mongoose example
+- use jade to render templates
 - evaluate server push with socket.io
