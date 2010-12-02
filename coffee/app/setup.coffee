@@ -19,7 +19,7 @@ module.exports.setup = ->
     app.use express.cookieDecoder()
     app.use express.session()
     app.use app.router
-    app.use express.staticProvider(__dirname + '../public')
+    app.use express.staticProvider(__dirname + '../../public')
   app.configure 'development', ->
     app.use express.errorHandler { dumpExceptions: true, showStack: true }
   app.configure 'production', ->

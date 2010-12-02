@@ -15,7 +15,7 @@
       app.use(express.cookieDecoder());
       app.use(express.session());
       app.use(app.router);
-      return app.use(express.staticProvider(__dirname + '../public'));
+      return app.use(express.staticProvider(__dirname + '../../public'));
     });
     app.configure('development', function() {
       return app.use(express.errorHandler({
