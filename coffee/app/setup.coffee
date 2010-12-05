@@ -31,10 +31,11 @@ module.exports.setup = ->
   
   # routing
   rootController = require './controllers/root'
+  usersController = require './controllers/users'
 
-  app.get "/", rootController.index;
-  # o.app.get("/users/:id", users_controller.show );
-  # o.app.post("/users", users_controller.create );
-  # o.app.put("/users/update/:id", users_controller.update );  
+  app.get "/", rootController.index
+  app.get '/users', usersController.index
+  app.get '/users/create', usersController.create
+  app.post '/users/create', usersController.create
     
   app

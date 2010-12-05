@@ -58,24 +58,19 @@
         }, {
           header: "Last Name"
         }, {
-          header: "Email",
-          renderer: function(a, b, c) {
-            return console.log(Ext.encode(c.data));
-          }
+          header: "Email"
         }
       ]
     }),
     tbar: [
       {
         iconCls: 'silk-delete',
-        text: 'Remove User',
-        handler: function() {}
+        text: 'Remove User'
       }, {
         xtype: 'tbfill'
       }, {
         iconCls: 'silk-add',
-        text: 'Add User',
-        handler: function() {}
+        text: 'Add User'
       }
     ],
     bbar: new Ext.PagingToolbar({
@@ -84,9 +79,8 @@
     listeners: {
       render: {
         fn: function() {
-          return Application.grid.getStore.load();
-        },
-        delay: 25
+          return Application.grid.getStore().load();
+        }
       }
     }
   });
