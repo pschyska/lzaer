@@ -1,5 +1,5 @@
 (function() {
-  var Component, Counter, callServer, counter, endpoints, http, server, sys, util;
+  var Component, Counter;
   var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -8,16 +8,7 @@
     child.__super__ = parent.prototype;
     return child;
   }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-  sys = require('sys');
-  util = require('util');
-  callServer = function(strFun, arg) {
-    var fun;
-    sys.puts("calling " + strFun + " with " + arg);
-    fun = eval(strFun);
-    return fun(arg);
-  };
-  endpoints = ['a', 'b', 'c'];
-  Component = function() {
+  module.exports.Component = Component = function() {
     function Component(name, endpoints) {
       this.name = name;
       this.endpoints = endpoints;
@@ -49,12 +40,12 @@
     };
     return Component;
   }();
-  Counter = function() {
+  module.exports.Counter = Counter = function() {
+    __extends(Counter, Component);
     function Counter(name) {
       Counter.__super__.constructor.call(this, name, this.endpoints);
-      this.counter = 1;
+      this.counter = 0;
     }
-    __extends(Counter, Component);
     Counter.prototype.privateFunction = function() {
       return "the client can not call me";
     };
@@ -81,13 +72,4 @@
     };
     return Counter;
   }();
-  counter = new Counter('some counter');
-  http = require('http');
-  server = http.createServer(function(req, res) {
-    res.writeHead(200, {
-      'Content-Type': 'application/json'
-    });
-    return res.end(counter.getClient());
-  });
-  server.listen(8124, "127.0.0.1");
 }).call(this);

@@ -1,3 +1,1 @@
-- rethink directory structure (src/ dist/).Rethink compilation system. A node.js based builder would be nice
-- use coffeecup to render templates, why go only half way with coffeescript :-)
 - evaluate server push with socket.io
