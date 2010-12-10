@@ -10,4 +10,3 @@ module.exports =
     u.name = 'Doe'
     u.username = 'jodo'
     u.save()
-        
