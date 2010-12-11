@@ -1,13 +1,13 @@
-# clientCode="var remoter=new window.Remoter();\n"
-# for k, v of @endpoints()
-#   sys.puts k
-#   sys.puts v      
-#   clientCode+="remoter.__generateEndpointProxy('#{k}')"
-# clientCode+="\n; \n"
-#     
-# clientCode+="var Client="
-# clientCode+=@render.toString()
-# clientCode+=";\nwindow.client=new Client();\n"
-# clientCode+="client.server=remoter; \n"
-# clientCode
-coffeescript -> "bleurgh"
+clientCode=
+  """
+    #{for k, v of @component.endpoints()
+      "Ekzten.remoter.__generateEndpointProxy '#{@component.globalId()}','#{k}'\n"
+    }
+
+    Ext.ns 'Ekzten.classes', 'Ekzten.components'
+    Ekzten.classes.#{@component.constructor.name}=`#{@component.render.toString()}`
+    Ekzten.components.#{@component.globalId()}=new Ekzten.classes.#{@component.constructor.name}()
+    Ekzten.components.#{@component.globalId()}.server = Ekzten.remoter.#{@component.globalId()}
+  """
+
+text CoffeeScript.compile clientCode

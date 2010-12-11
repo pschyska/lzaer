@@ -14,21 +14,9 @@ module.exports.Component=class Component
     throw "Need a name" unless @name
     @interface={}    
     sys.puts "I'm a #{@constructor.name} called #{name} and waiting for work!"
-  getClient: ->
-    # puts generated endpoint proxies here
-      
-    clientCode="var remoter=new window.Remoter();\n"
-    for k, v of @endpoints()
-      sys.puts k
-      sys.puts v      
-      clientCode+="remoter.__generateEndpointProxy('#{k}')"
-    clientCode+="\n; \n"
-        
-    clientCode+="var Client="
-    clientCode+=@render.toString()
-    clientCode+=";\nwindow.client=new Client();\n"
-    clientCode+="client.server=remoter; \n"
-    clientCode
+  globalId: ->
+    @name.replace(/[^0-9A-Za-z_]/, '-').replace /(\-[a-z])/g, ($1) -> 
+      $1.toUpperCase().replace '-',''
   render: ->
     throw "i'm abstract, sorry!"
 
@@ -48,5 +36,5 @@ module.exports.Counter=class Counter extends Component
     someClientVal: 0
     someClientFunction: ->
       @someClientVal++
-    someEndpointFunction: ->
-      @server.count();
+    someEndpointFunction: (arg)->
+      @server.count(arg);

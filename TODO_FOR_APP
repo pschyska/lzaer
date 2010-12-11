@@ -1,1 +1,2 @@
+- components should be able to render themselves, so that a container component can render its children
 - evaluate server push with socket.io

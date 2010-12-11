@@ -4,6 +4,7 @@
   global.express = require('express');
   global.mongoose = require('mongoose').Mongoose;
   global.Counter = require('./counter').Counter;
+  global.CoffeeScript = require("coffee-script");
   module.exports.setup = function() {
     var app, componentsController, rootController, usersController;
     global.db = mongoose.connect("mongodb://localhost/lzaer");

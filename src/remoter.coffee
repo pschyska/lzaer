@@ -2,20 +2,18 @@ class Remoter
   constructor: ->
 #    @connection = new Ext.data.Connection
       url: "/remoting_controller"
-  __callServer: (strFun,arg)->
-    alert(strFun+': '+arg)
+  __callServer: (componentId,endpoint,jsonArg)->
+    alert(componentId+' '+ endpoint+': '+jsonArg)
  #   @connection.send
     # fun=eval strFun
     # fun(arg)
-  __generateEndpointProxy: (proxy) =>
-    this[proxy]= (args...)->
+  __generateEndpointProxy: (componentId, proxy) =>
+    this[componentId]={}
+    this[componentId][proxy]= (args...)=>
       if args.length > 0
-        eval "this.__callServer('#{proxy}',JSON.stringify(#{args}));"
+        eval "this.__callServer('#{componentId}', '#{proxy}',JSON.stringify(#{args}));"
       else
-        eval "this.__callServer('#{proxy}');"
-
-window.Remoter=Remoter
-# remoter=new Remoter()
-# remoter.__generateEndpointProxies(['someEndpoint'])
-# 
-# remoter.someEndpoint("some argument",1,2,new Remoter(), [1,2,3])
+        eval "this.__callServer('#{componentId}', '#{proxy}');"
+  Ext.ns 'Ekzten', 'Ekzten.classes'
+  Ekzten.classes.Remoter = this
+  Ekzten.remoter=new Ekzten.classes.Remoter()

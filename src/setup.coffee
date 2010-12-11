@@ -3,6 +3,7 @@ global.util = require 'util'
 global.express = require 'express'
 global.mongoose = require('mongoose').Mongoose
 global.Counter = require('./counter').Counter
+global.CoffeeScript = require "coffee-script"
 
 module.exports.setup = ->
 

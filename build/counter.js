@@ -18,22 +18,10 @@
       this.interface = {};
       sys.puts("I'm a " + this.constructor.name + " called " + name + " and waiting for work!");
     }
-    Component.prototype.getClient = function() {
-      var clientCode, k, v, _ref;
-      clientCode = "var remoter=new window.Remoter();\n";
-      _ref = this.endpoints();
-      for (k in _ref) {
-        v = _ref[k];
-        sys.puts(k);
-        sys.puts(v);
-        clientCode += "remoter.__generateEndpointProxy('" + k + "')";
-      }
-      clientCode += "\n; \n";
-      clientCode += "var Client=";
-      clientCode += this.render.toString();
-      clientCode += ";\nwindow.client=new Client();\n";
-      clientCode += "client.server=remoter; \n";
-      return clientCode;
+    Component.prototype.globalId = function() {
+      return this.name.replace(/[^0-9A-Za-z_]/, '-').replace(/(\-[a-z])/g, function($1) {
+        return $1.toUpperCase().replace('-', '');
+      });
     };
     Component.prototype.render = function() {
       throw "i'm abstract, sorry!";
@@ -65,8 +53,8 @@
         someClientFunction: function() {
           return this.someClientVal++;
         },
-        someEndpointFunction: function() {
-          return this.server.count();
+        someEndpointFunction: function(arg) {
+          return this.server.count(arg);
         }
       };
     };
