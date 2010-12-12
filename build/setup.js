@@ -5,6 +5,10 @@
   global.mongoose = require('mongoose').Mongoose;
   global.Counter = require('./counter').Counter;
   global.CoffeeScript = require("coffee-script");
+  global.ComponentRegistry = require('./component_registry');
+  global.Components = {
+    counter: new Counter('some counter')
+  };
   module.exports.setup = function() {
     var app, componentsController, rootController, usersController;
     global.db = mongoose.connect("mongodb://localhost/lzaer");
@@ -35,6 +39,7 @@
     componentsController = require('./controllers/components');
     app.get("/", rootController.index);
     app.get("/components", componentsController.index);
+    app.get("/components/:componentId/:endpoint/:args", componentsController.endpoint);
     app.get('/users', usersController.index);
     app.get('/users/create', usersController.create);
     app.post('/users/create', usersController.create);

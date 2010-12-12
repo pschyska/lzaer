@@ -15,8 +15,7 @@
       if (!this.name) {
         throw "Need a name";
       }
-      this.interface = {};
-      sys.puts("I'm a " + this.constructor.name + " called " + name + " and waiting for work!");
+      ComponentRegistry.register(this);
     }
     Component.prototype.globalId = function() {
       return this.name.replace(/[^0-9A-Za-z_]/, '-').replace(/(\-[a-z])/g, function($1) {
@@ -43,20 +42,38 @@
           if (howMany == null) {
             howMany = 1;
           }
-          return this.counter += howMany;
+          this.counter += howMany;
+          return CoffeeScript.compile("      \n@widget.setTitle \"The servers says the counter says its at " + this.counter + "\"");
         }, this)
       };
     };
     Counter.prototype.render = function() {
-      return {
+      var client, widget;
+      client = {
         someClientVal: 0,
         someClientFunction: function() {
           return this.someClientVal++;
         },
-        someEndpointFunction: function(arg) {
-          return this.server.count(arg);
+        someEndpointFunction: function() {
+          return this.server.count(1);
         }
       };
+      widget = Ext.create({
+        xtype: 'panel',
+        header: true,
+        title: "Some panel",
+        items: [
+          {
+            xtype: 'button',
+            text: 'Click me, please',
+            handler: function() {
+              return client.someEndpointFunction();
+            }
+          }
+        ]
+      });
+      client.widget = widget;
+      return client;
     };
     return Counter;
   }();
