@@ -61,7 +61,7 @@
       widget = Ext.create({
         xtype: 'panel',
         header: true,
-        title: "Some panel",
+        title: "Somse panel",
         items: [
           {
             xtype: 'button',
