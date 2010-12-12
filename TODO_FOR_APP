@@ -1,2 +1,7 @@
 - components should be able to render themselves, so that a container component can render its children
+- how to multiplex the Ajax requests
+  1. Make the controller action able to handle multiple endpoints in one request
+  2. collect the endpoint calls with parameters in some array property of the Remoter when calling __callServer (implement some locking cheme on this array to prevent concurrency issues!)
+  3. delay a function call which will call Ext.Ajax.request, passing all endpoint calls of the array, passing the current size of the array
+  4. when the delayed call is made, check if the array size changed, if so, some other call has been made in the meantime and this call should do nothing (the newer call will be taken out later, and will pick up the endpoint added earlier)
 - evaluate server push with socket.io
