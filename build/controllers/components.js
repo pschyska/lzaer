@@ -9,9 +9,16 @@
       });
     },
     endpoint: function(request, response) {
-      var result, _ref;
-      result = (_ref = ComponentRegistry.get(request.params.componentId).endpoints())[request.params.endpoint].apply(_ref, JSON.parse(request.params.args));
-      return response.send(result);
+      var component, expansion, result, serverExpansion, _ref;
+      component = ComponentRegistry.get(request.params.componentId);
+      result = (_ref = component.endpoints())[request.params.endpoint].apply(_ref, JSON.parse(request.params.args)).toString();
+      serverExpansion = /\$[a-zA-Z0-9]*/;
+      expansion = result.match(serverExpansion);
+      while (expansion) {
+        result = result.replace(expansion[0], component[expansion[0].slice(1)]);
+        expansion = result.match(serverExpansion);
+      }
+      return response.send('(' + result + ').call(this)');
     }
   };
 }).call(this);

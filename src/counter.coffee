@@ -30,11 +30,8 @@ module.exports.Counter=class Counter extends Component
   endpoints: ->
     count: (howMany=1)=>
       @counter+=howMany
-      # return some function to be eval'd on the client
-      # TODO: user should never have to pass code as strings, find a nice way to expand @'s
-      CoffeeScript.compile """      
-        @widget.setTitle "The servers says the counter says its at #{@counter}"
-        """
+      ->
+        @widget.setTitle ""+$counter
             
   render: ->
     client=

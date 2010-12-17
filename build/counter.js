@@ -43,7 +43,9 @@
             howMany = 1;
           }
           this.counter += howMany;
-          return CoffeeScript.compile("      \n@widget.setTitle \"The servers says the counter says its at " + this.counter + "\"");
+          return function() {
+            return this.widget.setTitle("" + $counter);
+          };
         }, this)
       };
     };
@@ -61,7 +63,7 @@
       widget = Ext.create({
         xtype: 'panel',
         header: true,
-        title: "Somse panel",
+        title: "Some panel",
         items: [
           {
             xtype: 'button',

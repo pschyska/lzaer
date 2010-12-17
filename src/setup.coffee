@@ -7,6 +7,7 @@ global.CoffeeScript = require "coffee-script"
 global.ComponentRegistry = require './component_registry'
 global.Components=
   counter: new Counter('some counter')
+  
 
 module.exports.setup = ->
 
