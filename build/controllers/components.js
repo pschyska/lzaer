@@ -1,12 +1,7 @@
 (function() {
   module.exports = {
     index: function(request, response) {
-      return response.render('component', {
-        layout: false,
-        context: {
-          component: Components.counter
-        }
-      });
+      return Components.counter.render(response);
     },
     endpoint: function(request, response) {
       var component, expansion, result, serverExpansion, _ref;

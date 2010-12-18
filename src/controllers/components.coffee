@@ -1,9 +1,6 @@
 module.exports = 
   index: (request, response) ->
-    response.render 'component'
-      layout: false
-      context:
-        component: Components.counter
+    Components.counter.render(response)
   endpoint: (request, response) ->
     component=ComponentRegistry.get(request.params.componentId)
     result=

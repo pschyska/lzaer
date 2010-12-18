@@ -22,7 +22,15 @@
         return $1.toUpperCase().replace('-', '');
       });
     };
-    Component.prototype.render = function() {
+    Component.prototype.render = function(response) {
+      return response.render('component', {
+        layout: false,
+        context: {
+          component: this
+        }
+      });
+    };
+    Component.prototype.client = function() {
       throw "i'm abstract, sorry!";
     };
     return Component;
@@ -44,12 +52,12 @@
           }
           this.counter += howMany;
           return function() {
-            return this.widget.setTitle("" + $counter);
+            return this.widget.setTitle("The servers says the counter says its at " + $counter);
           };
         }, this)
       };
     };
-    Counter.prototype.render = function() {
+    Counter.prototype.client = function() {
       var client, widget;
       client = {
         someClientVal: 0,

@@ -16,7 +16,12 @@ module.exports.Component=class Component
   globalId: ->
     @name.replace(/[^0-9A-Za-z_]/, '-').replace /(\-[a-z])/g, ($1) -> 
       $1.toUpperCase().replace '-',''
-  render: ->
+  render: (response) ->
+    response.render 'component'
+      layout: false
+      context:
+        component: this
+  client: ->
     throw "i'm abstract, sorry!"
 
 module.exports.Counter=class Counter extends Component
@@ -31,9 +36,9 @@ module.exports.Counter=class Counter extends Component
     count: (howMany=1)=>
       @counter+=howMany
       ->
-        @widget.setTitle ""+$counter
+        @widget.setTitle "The servers says the counter says its at #{$counter}"
             
-  render: ->
+  client: ->
     client=
       someClientVal: 0
       someClientFunction: ->
