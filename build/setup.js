@@ -6,6 +6,7 @@
   global.Counter = require('./counter').Counter;
   global.CoffeeScript = require("coffee-script");
   global.ComponentRegistry = require('./component_registry');
+  global.ClassRegistry = require('./class_registry');
   global.Components = {
     counter: new Counter('some counter')
   };

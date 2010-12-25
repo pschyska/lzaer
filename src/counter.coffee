@@ -35,9 +35,13 @@ module.exports.Counter=class Counter extends Component
   endpoints: ->
     count: (howMany=1)=>
       @counter+=howMany
+      # TODO: Don't return function here as it doesn't work with inheritance
       ->
         @widget.setTitle "The servers says the counter says its at #{$counter}"
             
+  # TODO: Don't return fucntion here as it doesn't work with inheritance
+  #   you have to return a function because the code is not executable on the server
+  #   TODO: solution: handle inheritance on the client side. For this create class registry and define Ext classes
   client: ->
     client=
       someClientVal: 0

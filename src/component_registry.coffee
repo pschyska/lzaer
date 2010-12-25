@@ -1,3 +1,6 @@
+# this registers component instances to be looked up for RPC calls
+# TODO: attach to session
+
 module.exports=
   components: {}
   register: (component) ->

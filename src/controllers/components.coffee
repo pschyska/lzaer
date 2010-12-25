@@ -1,4 +1,5 @@
 module.exports = 
+# TODO: render as application/javascript
   index: (request, response) ->
     Components.counter.render(response)
   endpoint: (request, response) ->

@@ -53,4 +53,4 @@
 #         Application.grid.getStore().load()
 # 
  Ext.onReady ->
-   Ekzten.components.someCounter.widget.render "container"
+   NextJs.components.someCounter.widget.render "container"
