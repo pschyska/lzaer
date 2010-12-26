@@ -2,6 +2,7 @@ global.sys = require "sys"
 global.util = require "util"
 global.express = require "express"
 global.mongoose = require("mongoose").Mongoose
+global.Component = require("./counter").Component
 global.Counter = require("./counter").Counter
 global.SubCounter = require("./counter").SubCounter
 global.CoffeeScript = require "coffee-script"
@@ -14,8 +15,6 @@ global.Components=
 process.on 'uncaughtException', (err) ->
   console.log 'Caught exception: '+err
 
-console.log global.Components.counter.render()
-console.log global.Components.subcounter.render()
 
 module.exports.setup = ->
 

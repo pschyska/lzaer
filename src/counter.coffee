@@ -11,13 +11,11 @@ module.exports.Component=class Component
   constructor: (@name, @endpoints)->
     throw "Need a name" unless @name
     ComponentRegistry.register this
-    # TODO: register the class hierarchy
   globalId: ->
-
     @name.replace(/[^0-9A-Za-z_]/g, "-").replace /\-+(.)?/g, (match, char) ->
       (char || '').toUpperCase()
 
-  endpointConfig: (endpoints)->
+  endpointConfig= (endpoints)->
     res=[]
     for k, v of endpoints
       if v && k!="prototype" && k!="__super__"
@@ -30,15 +28,18 @@ module.exports.Component=class Component
   missingClasses: ->
     res=""
     unless ClassRegistry.clientHasClass(@constructor.name)
-      res+="NextJs.classes.#{@constructor.name}=Ext.extend #{@clientBaseClass()}, `#{@client.toString()}`" #  unless NextJs.classes.#{@constructor.name} this is not needed as class registry prevents double definition
+      res+="classdef=`#{@client.toString()}`\n"
+      res+="NextJs.classes.#{@constructor.name}=Ext.extend #{@clientBaseClass()}, classdef()" #  unless NextJs.classes.#{@constructor.name} this is not needed as class registry prevents double definition
       ClassRegistry.register @constructor.name
     res
 
     if @constructor.name!='Component'
       res=@constructor.__super__.missingClasses()+'\n'+res
     res
+  
     
   render: () ->
+
     clientCode=
       """
         Ext.ns "NextJs.providers", "NextJs.classes", "NextJs.components"
@@ -50,21 +51,21 @@ module.exports.Component=class Component
           "url":"components"
           "actions":
             "#{@globalId()}":[
-              #{@endpointConfig(@endpoints)}
+              #{endpointConfig(@endpoints)}
             ]
           "namespace":"NextJs.providers"
           # TODO: walk up in class hierarchy and generate missing class code
             # test by comparing class ev oucnt on counter, count+subcounter, subcounter usage
 
-        NextJs.components.#{@globalId()}=new NextJs.classes.#{@constructor.name}(#{JSON.stringify @clientConfig()})
+        config=`#{@clientConfig.toString()}`
+        NextJs.components.#{@globalId()}=new NextJs.classes.#{@constructor.name}(config())
 
         NextJs.components.#{@globalId()}.server = NextJs.providers.#{@globalId()}
       """
     CoffeeScript.compile clientCode
   clientConfig: ->
-  client: (config)->
-    throw "i'm abstract, sorry!"
-
+  client: ->
+    isNextJs: true
 module.exports.Counter=class Counter extends Component
   constructor: (name, endpoints={})->
     super name, @endpoints extends endpoints
