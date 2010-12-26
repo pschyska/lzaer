@@ -7,54 +7,101 @@
 
 # evtl. onChage event für clients mit server push (multiplexed)
 
-# DONT EVAL WHAT THE CLIENT SENDS. DETERMINE THE FUNCTION WITH this[fun].call(JSON.parse args)
-
 module.exports.Component=class Component
   constructor: (@name, @endpoints)->
     throw "Need a name" unless @name
     ComponentRegistry.register this
+    # TODO: register the class hierarchy
   globalId: ->
-    @name.replace(/[^0-9A-Za-z_]/, '-').replace /(\-[a-z])/g, ($1) -> 
-      $1.toUpperCase().replace '-',''
-  render: (response) ->
-    response.render 'component'
-      layout: false
-      context:
-        component: this
-  client: ->
+
+    @name.replace(/[^0-9A-Za-z_]/g, "-").replace /\-+(.)?/g, (match, char) ->
+      (char || '').toUpperCase()
+
+  endpointConfig: (endpoints)->
+    res=[]
+    for k, v of endpoints
+      if v && k!="prototype" && k!="__super__"
+        res += "{'name':'#{k}' , 'len':#{v.length}}"
+    res
+
+  clientBaseClass: ->
+    if @constructor.__super__? then "NextJs.classes."+@constructor.__super__.constructor.name else "Ext.Component"
+  
+  missingClasses: ->
+    res=""
+    unless ClassRegistry.clientHasClass(@constructor.name)
+      res+="NextJs.classes.#{@constructor.name}=Ext.extend #{@clientBaseClass()}, `#{@client.toString()}`" #  unless NextJs.classes.#{@constructor.name} this is not needed as class registry prevents double definition
+      ClassRegistry.register @constructor.name
+    res
+
+    if @constructor.name!='Component'
+      res=@constructor.__super__.missingClasses()+'\n'+res
+    res
+    
+  render: () ->
+    clientCode=
+      """
+        Ext.ns "NextJs.providers", "NextJs.classes", "NextJs.components"
+
+        #{@missingClasses()}          
+          
+        Ext.Direct.addProvider
+          "type":"remoting"
+          "url":"components"
+          "actions":
+            "#{@globalId()}":[
+              #{@endpointConfig(@endpoints)}
+            ]
+          "namespace":"NextJs.providers"
+          # TODO: walk up in class hierarchy and generate missing class code
+            # test by comparing class ev oucnt on counter, count+subcounter, subcounter usage
+
+        NextJs.components.#{@globalId()}=new NextJs.classes.#{@constructor.name}(#{JSON.stringify @clientConfig()})
+
+        NextJs.components.#{@globalId()}.server = NextJs.providers.#{@globalId()}
+      """
+    CoffeeScript.compile clientCode
+  clientConfig: ->
+  client: (config)->
     throw "i'm abstract, sorry!"
 
 module.exports.Counter=class Counter extends Component
-  constructor: (name)->
-    super name, @endpoints
+  constructor: (name, endpoints={})->
+    super name, @endpoints extends endpoints
     @counter=0
 
-  privateFunction: ->
-    "the client can not call me"
-
-  endpoints: ->
+  endpoints:
     count: (howMany=1)=>
       @counter+=howMany
-      # TODO: Don't return function here as it doesn't work with inheritance
+      # TODO: Dont return function here as it doesnt work with inheritance
       ->
         @widget.setTitle "The servers says the counter says its at #{$counter}"
             
-  # TODO: Don't return fucntion here as it doesn't work with inheritance
-  #   you have to return a function because the code is not executable on the server
-  #   TODO: solution: handle inheritance on the client side. For this create class registry and define Ext classes
+  clientConfig: ->
+    xtype: "panel"
+    header: true
+    title: "Some panel"
+    items: [
+      { xtype: "button", text: "Click me, please", handler: ->
+          client.someEndpointFunction() }
+      ]    
   client: ->
-    client=
-      someClientVal: 0
-      someClientFunction: ->
-        @someClientVal++
-      someEndpointFunction: ()->
-        @server.count(1);
-    widget= Ext.create
-      xtype: 'panel'
-      header: true
-      title: "Some panel"
-      items:
-        * xtype: 'button', text: 'Click me, please', handler: ->
-          client.someEndpointFunction()
-    client.widget=widget
-    client
+    someClientVal: 0
+    someClientFunction: ->
+      @someClientVal++
+    someEndpointFunction: ()->
+      @server.count(1);
+    
+module.exports.SubCounter=class SubCounter extends Counter
+  constructor: (name, endpoints={})->
+    super name, @endpoints extends endpoints
+
+  endpoints:
+    count: =>
+      super(2)
+
+  client: ()->
+    someClientVal: 0
+    someClientFunction: ->
+      super
+      super

@@ -14,6 +14,6 @@ class Remoter
         this.__callServer client, componentId, endpoint, JSON.stringify args
       else
         this.__callServer client, componentId, endpoint, JSON.stringify args
-  Ext.ns 'Ekzten', 'Ekzten.classes'
+  Ext.ns "Ekzten", "Ekzten.classes"
   Ekzten.classes.Remoter = this
   Ekzten.remoter=new Ekzten.classes.Remoter()

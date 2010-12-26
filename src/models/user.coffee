@@ -1,11 +1,11 @@
-mongoose.model 'User', {
+mongoose.model "User", {
 
-  properties: ['username', 'firstName', 'name'] 
+  properties: ["username", "firstName", "name"] 
 
   # indexes : [
-  #   'username',
-  #   'bio.age',
-  #   [['first'],['last']] // compound key indexes
+  #   "username",
+  #   "bio.age",
+  #   [["first"],["last"]] // compound key indexes
   # ],
 
   # static : {}, // adds methods onto the Model.
@@ -19,5 +19,5 @@ mongoose.model 'User', {
 
   getters: 
     fullName: ->
-      this.firstName + ' ' + this.name
+      this.firstName + " " + this.name
 }

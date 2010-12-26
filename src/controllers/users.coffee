@@ -6,7 +6,7 @@ module.exports =
         total: users.length
   create: (request, response) ->
     u = new User()
-    u.firstName = 'John'
-    u.name = 'Doe'
-    u.username = 'jodo'
+    u.firstName = "John"
+    u.name = "Doe"
+    u.username = "jodo"
     u.save()

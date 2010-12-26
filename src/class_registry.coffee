@@ -3,9 +3,8 @@
 
 module.exports=
   classes: {}
-  register: (clazz) ->
-    throw "class #{clazz.name} has been registered before" if @classes[clazz.name]
-    @classes[clazz.name]=clazz
-  clientHasClass: (className) ->
-    @classes[globalId]
-      # TODO: code for pushing Ext class to client and registering it
+  register: (className) ->
+    throw "class #{className} has been registered before" if @classes[className]
+    @classes[className]=true
+  clientHasClass: (className) ->    
+    @classes[className]

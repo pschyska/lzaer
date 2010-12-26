@@ -1,4 +1,4 @@
-app = require('./setup').setup()
+app = require("./setup").setup()
 
 if (!module.parent)
   app.listen 3000
