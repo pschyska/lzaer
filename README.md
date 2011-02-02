@@ -5,5 +5,3 @@ FAQ
 
 What is a tireling?
 ====================
-
-![Tireling on monday morning](lzaer/raw/master/tireling.gif "Tireling")

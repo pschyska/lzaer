@@ -22,6 +22,7 @@ module.exports.Component=class Component
         res += "{'name':'#{k}' , 'len':#{v.length}}"
     res
 
+  thisIsClassVar=0
   clientBaseClass: ->
     if @constructor.__super__? then "NextJs.classes."+@constructor.__super__.constructor.name else "Ext.Component"
   
@@ -68,7 +69,7 @@ module.exports.Component=class Component
     isNextJs: true
 module.exports.Counter=class Counter extends Component
   constructor: (name, endpoints={})->
-    super name, @endpoints extends endpoints
+    super name, @endpoints #extends endpoints
     @counter=0
 
   endpoints:
@@ -95,7 +96,7 @@ module.exports.Counter=class Counter extends Component
     
 module.exports.SubCounter=class SubCounter extends Counter
   constructor: (name, endpoints={})->
-    super name, @endpoints extends endpoints
+    super name, @endpoints #extends endpoints
 
   endpoints:
     count: =>
